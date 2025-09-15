@@ -31,15 +31,14 @@ public class ParentController {
         Parent parent = new Parent(
                 request.getUsername(),
                 request.getEmail(),
-                passwordEncoder.encode(request.getPassword()), // hash password
+                passwordEncoder.encode(request.getPassword()),
                 request.getName(),
-                request.getPhoneNumber() // ✅ use phone instead of studentId here
+                request.getPhoneNumber()
         );
 
         parent.setParentId(UUID.randomUUID().toString());
         Parent savedParent = parentRepository.save(parent);
 
-        // If student exists, update student.parentId
         if (request.getStudentId() != null) {
             Student student = studentRepository.findByStudentId(request.getStudentId())
                     .orElseThrow(() -> new RuntimeException("Student not found"));
@@ -47,7 +46,7 @@ public class ParentController {
             studentRepository.save(student);
         }
 
-
         return ResponseEntity.ok(savedParent);
+
     }
 }

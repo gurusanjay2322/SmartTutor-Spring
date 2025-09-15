@@ -4,9 +4,11 @@ import com.example.SmartTutor.model.User;
 import com.example.SmartTutor.model.Role;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "students")
 public class Student extends User {
+    @Field("studentId")
     private String studentId;
 
     private String name;
