@@ -2,9 +2,8 @@ package com.example.SmartTutor.controller;
 
 import com.example.SmartTutor.dto.SchoolAdminRequest;
 import com.example.SmartTutor.dto.SchoolAdminResponse;
-import com.example.SmartTutor.model.Role;
-import com.example.SmartTutor.model.User;
-import com.example.SmartTutor.repository.UserRepository;
+import com.example.SmartTutor.model.users.SchoolAdmin;
+import com.example.SmartTutor.repository.SchoolAdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -14,23 +13,24 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class SuperAdminController {
 
-    private final UserRepository userRepository;
+    private final SchoolAdminRepository schoolAdminRepository;
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/create-school-admin")
     public SchoolAdminResponse createSchoolAdmin(@RequestBody SchoolAdminRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())) {
+        if (schoolAdminRepository.existsByUsername(request.getUsername())) {
             return new SchoolAdminResponse("❌ Username already exists!", null);
         }
 
-        User schoolAdmin = User.builder()
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.SCHOOL_ADMIN)
-                .build();
+        SchoolAdmin schoolAdmin = new SchoolAdmin(
+                request.getUsername(),
+                request.getEmail(),
+                passwordEncoder.encode(request.getPassword()),
+                request.getSchoolName(),
+                request.getLocation()
+        );
 
-        userRepository.save(schoolAdmin);
+        schoolAdminRepository.save(schoolAdmin);
         return new SchoolAdminResponse("✅ School Admin created successfully!", schoolAdmin.getId());
     }
 }

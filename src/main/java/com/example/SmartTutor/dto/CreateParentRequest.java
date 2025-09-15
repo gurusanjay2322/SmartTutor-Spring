@@ -3,10 +3,11 @@ package com.example.SmartTutor.dto;
 import lombok.Data;
 
 @Data
-public class SchoolAdminRequest {
+public class CreateParentRequest {
     private String username;
     private String email;
     private String password;
-    private String schoolName;
-    private String location;
+    private String name;
+    private String phoneNumber; // ✅ added
+    private String studentId;   // optional
 }
