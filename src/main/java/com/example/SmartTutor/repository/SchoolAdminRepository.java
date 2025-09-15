@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface SchoolAdminRepository extends MongoRepository<SchoolAdmin, String> {
     boolean existsByUsername(String username);
 
-    Optional<? extends User> findByUsername(String username);
+    Optional<SchoolAdmin> findByUsername(String username);
 }
+

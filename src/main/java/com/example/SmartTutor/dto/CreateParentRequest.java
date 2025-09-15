@@ -8,6 +8,6 @@ public class CreateParentRequest {
     private String email;
     private String password;
     private String name;
-    private String phoneNumber; // ✅ added
+    private String phoneNumber;
     private String studentId;   // optional
 }

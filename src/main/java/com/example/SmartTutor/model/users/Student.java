@@ -7,23 +7,28 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "students")
 public class Student extends User {
-    private String studentId; // separate from MongoDB _id
+    private String studentId;
 
     private String name;
     private String classLevel;
     private int points;
-    private String parentId; // reference to parent
+    private String parentId;
+
+    private String schoolId;    // Mongo _id of SchoolAdmin
+    private String schoolName;  // cached from SchoolAdmin
 
     public Student(String username, String email, String password,
-                   String name, String classLevel, String parentId) {
+                   String name, String classLevel, String parentId,
+                   String schoolId, String schoolName) {
         super(username, email, password, Role.STUDENT);
         this.name = name;
         this.classLevel = classLevel;
-        this.points = 0; // default
+        this.points = 0;
         this.parentId = parentId;
+        this.schoolId = schoolId;
+        this.schoolName = schoolName;
     }
 
-    // getters & setters
     public String getStudentId() { return studentId; }
     public void setStudentId(String studentId) { this.studentId = studentId; }
 
@@ -38,4 +43,10 @@ public class Student extends User {
 
     public String getParentId() { return parentId; }
     public void setParentId(String parentId) { this.parentId = parentId; }
+
+    public String getSchoolId() { return schoolId; }
+    public void setSchoolId(String schoolId) { this.schoolId = schoolId; }
+
+    public String getSchoolName() { return schoolName; }
+    public void setSchoolName(String schoolName) { this.schoolName = schoolName; }
 }

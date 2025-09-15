@@ -1,4 +1,5 @@
 package com.example.SmartTutor.controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.SmartTutor.dto.CreateParentRequest;
 import com.example.SmartTutor.model.users.Parent;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/parents")
 public class ParentController {
 
     @Autowired
@@ -25,25 +26,27 @@ public class ParentController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/create-parents")
+    @PreAuthorize("hasRole('SCHOOL_ADMIN')")
     public ResponseEntity<Parent> createParent(@RequestBody CreateParentRequest request) {
         Parent parent = new Parent(
                 request.getUsername(),
                 request.getEmail(),
-                passwordEncoder.encode(request.getPassword()),
+                passwordEncoder.encode(request.getPassword()), // hash password
                 request.getName(),
-                request.getPhoneNumber()
+                request.getPhoneNumber() // ✅ use phone instead of studentId here
         );
 
         parent.setParentId(UUID.randomUUID().toString());
-
         Parent savedParent = parentRepository.save(parent);
 
+        // If student exists, update student.parentId
         if (request.getStudentId() != null) {
-            Student student = studentRepository.findById(request.getStudentId())
+            Student student = studentRepository.findByStudentId(request.getStudentId())
                     .orElseThrow(() -> new RuntimeException("Student not found"));
             student.setParentId(savedParent.getParentId());
             studentRepository.save(student);
         }
+
 
         return ResponseEntity.ok(savedParent);
     }

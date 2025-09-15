@@ -35,7 +35,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/superadmin/**").hasAuthority("SUPER_ADMIN")
 
                         // School Admin endpoints
-                        .requestMatchers("/api/students/**", "/api/parents/**").hasAuthority("SCHOOL_ADMIN")
+                        .requestMatchers("/api/students/create-students/**", "/api/parents/create-parents/**").hasAuthority("SCHOOL_ADMIN")
 
                         // everything else authenticated
                         .anyRequest().authenticated()
