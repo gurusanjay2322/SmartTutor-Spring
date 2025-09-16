@@ -9,5 +9,6 @@ public class CreateStudentRequest {
     private String password;
     private String name;
     private String classLevel;
-    private String parentId; // optional
+    private String parentPhoneNumber;
 }
+

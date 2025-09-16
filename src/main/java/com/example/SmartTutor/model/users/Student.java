@@ -2,7 +2,6 @@ package com.example.SmartTutor.model.users;
 
 import com.example.SmartTutor.model.User;
 import com.example.SmartTutor.model.Role;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -14,6 +13,7 @@ public class Student extends User {
     private String name;
     private String classLevel;
     private int points;
+    private String parentPhoneNumber;
     private String parentId;
 
     private String schoolId;    // Mongo _id of SchoolAdmin
@@ -45,6 +45,9 @@ public class Student extends User {
 
     public String getParentId() { return parentId; }
     public void setParentId(String parentId) { this.parentId = parentId; }
+
+    public String getParentPhoneNumber() { return parentPhoneNumber; }
+    public void setParentPhoneNumber(String parentPhoneNumber) { this.parentPhoneNumber = parentPhoneNumber; }
 
     public String getSchoolId() { return schoolId; }
     public void setSchoolId(String schoolId) { this.schoolId = schoolId; }
