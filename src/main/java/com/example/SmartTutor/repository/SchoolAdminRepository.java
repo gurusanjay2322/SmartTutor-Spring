@@ -2,6 +2,7 @@ package com.example.SmartTutor.repository;
 
 import com.example.SmartTutor.model.User;
 import com.example.SmartTutor.model.users.SchoolAdmin;
+import com.example.SmartTutor.model.users.Student;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
@@ -10,5 +11,6 @@ public interface SchoolAdminRepository extends MongoRepository<SchoolAdmin, Stri
     boolean existsByUsername(String username);
 
     Optional<SchoolAdmin> findByUsername(String username);
+    Optional<Student> findByEmail(String email);
 }
 

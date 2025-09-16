@@ -28,19 +28,19 @@ public class SecurityConfig {
                                 "/webjars/**"
                         ).permitAll()
 
-                        // login endpoint
-                        .requestMatchers("/api/auth/login").permitAll()
+                        // Auth endpoints (login and forgot-password public)
+                        .requestMatchers("/api/auth/login", "/api/auth/forgot-password", "api/auth/reset-password").permitAll()
 
                         // Super Admin endpoints
                         .requestMatchers("/api/superadmin/**").hasAuthority("SUPER_ADMIN")
 
                         // School Admin endpoints
-                        .requestMatchers("/api/students/create-students/**", "/api/parents/create-parents/**").hasAuthority("SCHOOL_ADMIN")
+                        .requestMatchers("/api/students/create-students/**", "/api/parents/create-parents/**")
+                        .hasAuthority("SCHOOL_ADMIN")
 
-                        // everything else authenticated
+                        // everything else requires authentication
                         .anyRequest().authenticated()
                 )
-
                 // JWT filter
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -52,3 +52,4 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 }
+
