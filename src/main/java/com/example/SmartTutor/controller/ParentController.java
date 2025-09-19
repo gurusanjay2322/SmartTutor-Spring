@@ -45,17 +45,20 @@ public class ParentController {
         parent.setParentId(UUID.randomUUID().toString());
         Parent savedParent = parentRepository.save(parent);
 
-        // Link parent to a student if studentId is provided
+        // 🔗 Link parent to a student if studentId is provided
         if (request.getStudentId() != null) {
             Student student = studentRepository.findByStudentId(request.getStudentId())
                     .orElseThrow(() -> new RuntimeException("Student not found"));
+
+            // update student with parent details
             student.setParentId(savedParent.getParentId());
+            student.setParentPhoneNumber(savedParent.getPhoneNumber());
+
             studentRepository.save(student);
         }
 
         return ResponseEntity.ok(savedParent);
     }
-
 
     @GetMapping("/me/profile")
     public ResponseEntity<ParentProfileResponse> getMyProfile(Authentication authentication) {
@@ -86,4 +89,27 @@ public class ParentController {
 
         return ResponseEntity.ok(response);
     }
+    @PutMapping("/me/profile")
+    @PreAuthorize("hasRole('PARENT')")
+    public ResponseEntity<Parent> updateMyProfile(
+            Authentication authentication,
+            @RequestBody CreateParentRequest request) {
+
+        String username = authentication.getName();
+        Parent parent = parentRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Parent not found"));
+
+        parent.setName(request.getName());
+        parent.setPhoneNumber(request.getPhoneNumber());
+        parent.setEmail(request.getEmail());
+
+        // update password if provided
+        if (request.getPassword() != null && !request.getPassword().isEmpty()) {
+            parent.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
+        Parent updated = parentRepository.save(parent);
+        return ResponseEntity.ok(updated);
+    }
+
 }

@@ -11,4 +11,5 @@ public interface ParentRepository extends MongoRepository<Parent, String> {
     Optional<Parent> findByUsername(String username);
     Optional<Parent> findByParentId(String parentId);
     Optional<Student> findByEmail(String email);
+
 }

@@ -3,6 +3,7 @@ package com.example.SmartTutor.controller;
 import com.example.SmartTutor.model.GradeSubjects;
 import com.example.SmartTutor.model.users.Parent;
 import com.example.SmartTutor.service.SubjectService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import com.example.SmartTutor.model.users.Student;
@@ -81,7 +82,7 @@ public class StudentController {
 
         Parent parent = null;
         if (student.getParentId() != null) {
-            parent = parentRepository.findById(student.getParentId()).orElse(null);
+            parent = parentRepository.findByParentId(student.getParentId()).orElse(null);
         }
 
         StudentProfileResponse profile = new StudentProfileResponse(
@@ -94,6 +95,31 @@ public class StudentController {
                 parent != null ? parent.getPhoneNumber() : student.getParentPhoneNumber()
         );
 
+
         return ResponseEntity.ok(profile);
     }
+    @PutMapping("/me/profile")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<Student> updateMyProfile(
+            Authentication authentication,
+            @RequestBody CreateStudentRequest request) {
+
+        String username = authentication.getName();
+        Student student = studentRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        student.setName(request.getName());
+        student.setEmail(request.getEmail());
+        student.setClassLevel(request.getClassLevel());
+        student.setParentPhoneNumber(request.getParentPhoneNumber());
+
+        // update password if provided
+        if (request.getPassword() != null && !request.getPassword().isEmpty()) {
+            student.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
+        Student updated = studentRepository.save(student);
+        return ResponseEntity.ok(updated);
+    }
+
 }

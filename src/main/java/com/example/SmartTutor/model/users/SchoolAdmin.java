@@ -19,4 +19,7 @@ public class SchoolAdmin extends User {
         this.schoolName = schoolName;
         this.location = location;
     }
+
+    public void setName(String name) {
+    }
 }
