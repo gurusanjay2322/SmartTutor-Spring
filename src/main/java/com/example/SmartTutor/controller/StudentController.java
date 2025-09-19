@@ -1,6 +1,8 @@
 package com.example.SmartTutor.controller;
 
+import com.example.SmartTutor.model.GradeSubjects;
 import com.example.SmartTutor.model.users.Parent;
+import com.example.SmartTutor.service.SubjectService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import com.example.SmartTutor.model.users.Student;
@@ -32,6 +34,8 @@ public class StudentController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private SubjectService subjectService;
     @PostMapping("/create-students")
     public ResponseEntity<Student> createStudent(@RequestBody CreateStudentRequest request,
                                                  Authentication authentication) {
@@ -58,10 +62,17 @@ public class StudentController {
         student.setParentPhoneNumber(request.getParentPhoneNumber());
         student.setStudentId(UUID.randomUUID().toString());
 
+        // ✅ Fetch subjects automatically based on grade/classLevel
+        GradeSubjects gradeSubjects = subjectService.getSubjectsByGrade(request.getClassLevel());
+        student.setGradeSubjects(gradeSubjects);
+
+
+
         Student savedStudent = studentRepository.save(student);
 
         return ResponseEntity.ok(savedStudent);
     }
+
     @GetMapping("/me/profile")
     public ResponseEntity<StudentProfileResponse> getMyProfile(Authentication authentication) {
         String username = authentication.getName();
