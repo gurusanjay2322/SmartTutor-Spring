@@ -18,29 +18,29 @@ public class DataInitializer {
     private final PasswordEncoder passwordEncoder;
 
     // Load values from application.properties or environment variables
-    @Value("${superadmin.username:superadmin}")
-    private String superAdminUsername;
+    @Value("${admin.username:admin}")
+    private String adminUsername;
 
-    @Value("${superadmin.email:superadmin@smarttutor.com}")
-    private String superAdminEmail;
+    @Value("${admin.email:admin@smarttutor.com}")
+    private String adminEmail;
 
-    @Value("${superadmin.password:super123}") // default only for local dev
-    private String superAdminPassword;
+    @Value("${admin.password:admin123}") // default only for local dev
+    private String adminPassword;
 
     @Bean
-    CommandLineRunner initSuperAdmin() {
+    CommandLineRunner initAdmin() {
         return args -> {
-            if (userRepository.findByUsername(superAdminUsername).isEmpty()) {
-                User superAdmin = User.builder()
-                        .username(superAdminUsername)
-                        .email(superAdminEmail)
-                        .password(passwordEncoder.encode(superAdminPassword))
-                        .role(Role.SUPER_ADMIN)
+            if (userRepository.findByUsername(adminUsername).isEmpty()) {
+                User admin = User.builder()
+                        .username(adminUsername)
+                        .email(adminEmail)
+                        .password(passwordEncoder.encode(adminPassword))
+                        .role(Role.ADMIN)
                         .build();
-                userRepository.save(superAdmin);
-                System.out.println("Super Admin user created successfully.");
+                userRepository.save(admin);
+                System.out.println("Default Admin user created successfully.");
             } else {
-                System.out.println("Super Admin already exists, skipping creation.");
+                System.out.println("Admin already exists, skipping creation.");
             }
         };
     }

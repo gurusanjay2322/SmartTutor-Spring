@@ -28,15 +28,15 @@ public class SecurityConfig {
                                 "/webjars/**"
                         ).permitAll()
 
-                        // Auth endpoints (login and forgot-password public)
-                        .requestMatchers("/api/auth/login", "/api/auth/forgot-password", "api/auth/reset-password").permitAll()
+                        // Auth endpoints
+                        .requestMatchers(
+                                "/api/auth/login",
+                                "/api/auth/forgot-password",
+                                "/api/auth/reset-password"
+                        ).permitAll()
 
-                        // Super Admin endpoints
-                        .requestMatchers("/api/superadmin/**").hasAuthority("SUPER_ADMIN")
-
-                        // School Admin endpoints
-                        .requestMatchers("/api/students/create-students/**", "/api/parents/create-parents/**")
-                        .hasAuthority("SCHOOL_ADMIN")
+                        // ✅ Allow student self-registration
+                        .requestMatchers("/api/students/register").permitAll()
 
                         // everything else requires authentication
                         .anyRequest().authenticated()
@@ -52,4 +52,5 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 }
+
 

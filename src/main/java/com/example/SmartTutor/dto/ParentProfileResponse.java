@@ -10,6 +10,7 @@ public class ParentProfileResponse {
     private String email;
     private String username;
     private String phoneNumber;
+    private String password;
     private List<ChildResponse> children;
 
     public ParentProfileResponse(String parentId, String name, String email,
@@ -38,6 +39,8 @@ public class ParentProfileResponse {
 
     public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
     public List<ChildResponse> getChildren() { return children; }
     public void setChildren(List<ChildResponse> children) { this.children = children; }

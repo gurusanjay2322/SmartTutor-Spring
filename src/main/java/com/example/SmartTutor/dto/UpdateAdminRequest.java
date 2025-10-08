@@ -2,11 +2,9 @@ package com.example.SmartTutor.dto;
 
 import lombok.Data;
 
-// For updating SchoolAdmin profile
 @Data
-public class UpdateSchoolAdminRequest {
+public class UpdateAdminRequest {
     private String name;
     private String email;
-    private String schoolName;
     private String password; // optional
 }

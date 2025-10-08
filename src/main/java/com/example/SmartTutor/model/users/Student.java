@@ -3,11 +3,9 @@ package com.example.SmartTutor.model.users;
 import com.example.SmartTutor.model.GradeSubjects;
 import com.example.SmartTutor.model.User;
 import com.example.SmartTutor.model.Role;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-//import com.example.SmartTutor.model.GradeSubjects;
-
-import java.util.List;
 
 @Document(collection = "students")
 public class Student extends User {
@@ -19,10 +17,8 @@ public class Student extends User {
     private int points;
     private String parentPhoneNumber;
     private String parentId;
-    private String schoolId;    // Mongo _id of SchoolAdmin
-    private String schoolName;  // cached from SchoolAdmin
-
-    // ✅ Add this
+    private String schoolId;
+    private String schoolName;
     private GradeSubjects gradeSubjects;
 
     public Student(String username, String email, String password,
@@ -36,6 +32,7 @@ public class Student extends User {
         this.schoolId = schoolId;
         this.schoolName = schoolName;
     }
+
 
     // getters and setters
 
@@ -70,6 +67,7 @@ public class Student extends User {
     public void setGradeSubjects(GradeSubjects gradeSubjects) {
         this.gradeSubjects = gradeSubjects;
     }
+
 
 
 }

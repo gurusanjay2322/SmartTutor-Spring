@@ -4,13 +4,18 @@ import com.example.SmartTutor.model.User;
 import com.example.SmartTutor.model.Role;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 @Document(collection = "parents")
 public class Parent extends User {
     private String parentId;
 
+    @Indexed(unique = true)
+    private String phoneNumber;
+
+    @Indexed(unique = true)
     private String name;
-    private String phoneNumber; // ✅ added phone field
+
 
     public Parent(String username, String email, String password,
                   String name, String phoneNumber) {
