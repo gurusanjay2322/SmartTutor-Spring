@@ -35,7 +35,8 @@ public class SecurityConfig {
                                 "/api/auth/reset-password"
                         ).permitAll()
 
-                        // ✅ Allow student self-registration
+                        .requestMatchers("/api/subjects/**/lessons/**").hasRole("ADMIN")
+
                         .requestMatchers("/api/students/register").permitAll()
 
                         // everything else requires authentication
